@@ -1,0 +1,14 @@
+# long-description: Creates a GPT disk image for Rockchip boards
+# Note: Only kernel and rootfs can load from usb-disk.
+# The previous boot stages firmware (SPL and U-Boot) in the eMMC.
+# Useful link for more details:
+# http://opensource.rock-chips.com/wiki_Boot_option
+
+part /boot --size 114688K --active --source bootimg-partition --fstype=vfat --label boot --use-uuid --sourceparams="loader=u-boot"
+${WIC_ROOTA_PARTITION}
+${WIC_ROOTB_PARTITION}
+${WIC_DEVDATA_PARTITION}
+${WIC_SYSDATA_PARTITION}
+${WIC_APPDATA_PARTITION}
+
+bootloader --ptable gpt --append="console=tty1 console=ttyFIQ0,115200n8 rw rootfstype=${ROOT_FSTYPE} init=/sbin/init"

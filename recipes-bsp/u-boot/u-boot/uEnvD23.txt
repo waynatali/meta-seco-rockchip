@@ -1,0 +1,21 @@
+arch=arm
+baudrate=115200
+board=px30_d23
+board_name=px30_d23
+bootdelay=5
+cpu=armv8
+devnum=0
+devtype=mmc
+kernel_file=Image
+fdt_file=seco-px30-d23-revc-hdmi.dtb
+fdt_loadaddr=0x08300000
+fdtcontroladdr=0x8300000
+kernel_loadaddr=0x00280000
+preboot=dvfs repeat
+scriptaddr=0x00500000
+soc=rockchip
+stderr=serial
+stdout=serial
+vendor=seco
+usb_boot=fatload usb 0:1 ${kernel_loadaddr} ${kernel_file}; fatload usb 0:1 ${fdt_loadaddr} ${fdt_file}; booti ${kernel_loadaddr} - ${fdt_loadaddr}
+bootargs=root=/dev/sda2 rw rootwait earlycon=uart8250,mmio32,0xff160000 swiotlb=1 console=ttyFIQ0
