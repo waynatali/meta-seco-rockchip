@@ -15,7 +15,9 @@ SRCREV_FORMAT = "linux-firmware-murata"
 # Install addition firmwares
 do_install:append:seco-px30-d23() {
 	cp -r ${WORKDIR}/firmware ${D}${nonarch_base_libdir}/
-	install -m 0644 ${WORKDIR}/license-destdir/linux-firmware/LICENSE.rockchip ${D}${nonarch_base_libdir}/firmware/
+	if [ -e ${WORKDIR}/license-destdir/linux-firmware/LICENSE.rockchip ]; then
+		install -m 0644 ${WORKDIR}/license-destdir/linux-firmware/LICENSE.rockchip ${D}${nonarch_base_libdir}/firmware/
+	fi
 	install -m 0644 ${WORKDIR}/murata-fw/cyfmac43455-sdio.bin ${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac43455-sdio.bin
 	install -m 0644 ${WORKDIR}/murata-fw/cyfmac43455-sdio.1MW.clm_blob ${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac43455-sdio.clm_blob
 	install -m 0644 ${WORKDIR}/murata-nvram/cyfmac43455-sdio.1MW.txt ${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac43455-sdio.txt

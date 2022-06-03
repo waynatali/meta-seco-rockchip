@@ -17,9 +17,6 @@ SRC_URI = " \
 SRCREV = "17dd6012f3f63bf7803717b6476d7b267027234a"
 S = "${WORKDIR}/git"
 
-PATCHPATH = "${THISDIR}/files"
-inherit auto-patch
-
 DEPENDS = "libdrm"
 
 PROVIDES += "virtual/egl virtual/libgles1 virtual/libgles2 virtual/libgles3 virtual/libgbm"
