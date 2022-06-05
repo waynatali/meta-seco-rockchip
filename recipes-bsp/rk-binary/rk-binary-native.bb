@@ -48,30 +48,3 @@ do_install () {
 	install -m 0755 afptool ${D}/${bindir}
 	install -m 0755 rkImageMaker ${D}/${bindir}
 }
-
-
-NATIVE_TOOLS = "boot_merger trust_merger firmwareMerger loaderimage mkkrnlimg resource_tool upgrade_tool"
-NATIVE_EXTRA_TOOLS = "afptool rkImageMaker"
-
-addtask deploy before do_build after do_compile
-do_deploy () {
-	cd ${S}/tools
-	
-	if [ ! -e ${DEPLOY_DIR_IMAGE}/rk_tools ]; then
-		install -d ${DEPLOY_DIR_IMAGE}/rk_tools
-	fi
-
-	for binary in "${NATIVE_TOOLS}"; do
-		if [[ ! -e ${DEPLOY_DIR_IMAGE}/rk_tools/${binary} ]]; then
-			install -m 0755 ${binary}  ${DEPLOY_DIR_IMAGE}/rk_tools
-		fi
-	done
-
-	cd ${S}/extra/linux/Linux_Pack_Firmware/rockdev
-
-	for binary in "${NATIVE_EXTRA_TOOLS}"; do
-		if [[ ! -e ${DEPLOY_DIR_IMAGE}/rk_tools/${binary} ]]; then
-			install -m 0755 ${binary}  ${DEPLOY_DIR_IMAGE}/rk_tools
-		fi
-	done
-}

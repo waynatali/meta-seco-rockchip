@@ -108,10 +108,8 @@ do_deploy:append() {
 		ln -sf "${binary}-${PV}" "${DEPLOYDIR}/${binary}"
 	done
 	
-	install -m 0755 *_loader*.bin  ${DEPLOY_DIR_IMAGE}	
-	
-	install -m 0755 ${WORKDIR}/rkbin/tools/upgrade_tool  ${DEPLOY_DIR_IMAGE}
-	
-	install -m 0755 ${WORKDIR}/flash_d23.sh  ${DEPLOY_DIR_IMAGE}
-	install -m 0755 ${WORKDIR}/uEnvD23.txt  ${DEPLOY_DIR_IMAGE}
+	install -m 0755 *_loader*.bin ${DEPLOYDIR}
+	install -m 0755 ${WORKDIR}/rkbin/tools/upgrade_tool ${DEPLOYDIR}
+	install -m 0755 ${WORKDIR}/flash_d23.sh ${DEPLOYDIR}
+	install -m 0755 ${WORKDIR}/uEnvD23.txt ${DEPLOYDIR}
 }
