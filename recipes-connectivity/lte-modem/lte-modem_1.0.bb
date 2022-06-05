@@ -10,6 +10,8 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 S = "${WORKDIR}"
 
+INSANE_SKIP:${PN} = "already-stripped"
+
 SRC_URI = "file://quectel-CM.tar.gz"
 
 do_install() {
