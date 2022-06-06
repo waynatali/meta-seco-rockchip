@@ -12,7 +12,7 @@ PV:append = "+git${SRCPV}"
 inherit freeze-rev
 
 SRC_URI = " \
-	git://github.com/JeffyCN/mirrors.git;branch=libmali; \
+	git://github.com/JeffyCN/mirrors.git;protocol=https;branch=libmali; \
 "
 SRCREV = "17dd6012f3f63bf7803717b6476d7b267027234a"
 S = "${WORKDIR}/git"
