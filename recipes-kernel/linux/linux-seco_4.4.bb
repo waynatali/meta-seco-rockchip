@@ -5,14 +5,14 @@ require linux-seco.inc
 
 inherit freeze-rev
 
-KERNEL_SRC ?= "git://git.seco.com/pub/rockchip/linux-seco-rk4.4.git;"
-PROTOCOL ?= "protocol=ssh;"
+KERNEL_SRC ?= "git://git.seco.com/pub/rockchip/linux-seco-rk4.4.git"
+PROTOCOL ?= "protocol=ssh"
 
 REPO_USER ?= ""
 
 SRCBRANCH = "develop"
 
-SRC_URI = "${KERNEL_SRC}branch=${SRCBRANCH};${PROTOCOL}${REPO_USER}"
+SRC_URI = "${KERNEL_SRC};branch=${SRCBRANCH};${PROTOCOL};${REPO_USER}"
 SRCREV = "645936464a1d6641c2bab5686045d4fce281fdd3"
 
 KERNEL_VERSION_SANITY_SKIP = "1"

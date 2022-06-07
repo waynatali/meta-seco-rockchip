@@ -4,9 +4,6 @@
 LICENSE = "GPLv2"
 LIC_FILES_CHKSUM = "file://COPYING;md5=d7810fab7487fb0aad327b76f1be7cd7"
 
-inherit auto-patch
-PATCHPATH = "${CURDIR}/linux-seco_4.4"
-
 inherit python3-dir
 
 DEPENDS += "lzop-native bc-native openssl-native lz4-native ${PYTHON_PN}-native"
