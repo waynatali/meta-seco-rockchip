@@ -1,0 +1,41 @@
+From cbeee07975e6d526c9a3ebdb97d07c0b2a21e56c Mon Sep 17 00:00:00 2001
+From: Natalia Kovalenko <waykovalenko@gmail.com>
+Date: Thu, 9 Jun 2022 10:33:03 +0200
+Subject: [PATCH 3/3] scripts: dtc: Fix the multiple definition of yylloc
+
+This issue happens in a build configuration using gcc version 10
+
+Keep declaration in header dtc-parser.tab.h
+and definition in dtc-parser.tab.c
+---
+ scripts/dtc/dtc-lexer.l             | 1 -
+ scripts/dtc/dtc-lexer.lex.c_shipped | 1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/scripts/dtc/dtc-lexer.l b/scripts/dtc/dtc-lexer.l
+index fd825eb..24af549 100644
+--- a/scripts/dtc/dtc-lexer.l
++++ b/scripts/dtc/dtc-lexer.l
+@@ -38,7 +38,6 @@ LINECOMMENT	"//".*\n
+ #include "srcpos.h"
+ #include "dtc-parser.tab.h"
+ 
+-YYLTYPE yylloc;
+ extern bool treesource_error;
+ 
+ /* CAUTION: this will stop working if we ever use yyless() or yyunput() */
+diff --git a/scripts/dtc/dtc-lexer.lex.c_shipped b/scripts/dtc/dtc-lexer.lex.c_shipped
+index 011bb96..79952cd 100644
+--- a/scripts/dtc/dtc-lexer.lex.c_shipped
++++ b/scripts/dtc/dtc-lexer.lex.c_shipped
+@@ -631,7 +631,6 @@ char *yytext;
+ #include "srcpos.h"
+ #include "dtc-parser.tab.h"
+ 
+-YYLTYPE yylloc;
+ extern bool treesource_error;
+ 
+ /* CAUTION: this will stop working if we ever use yyless() or yyunput() */
+-- 
+2.25.1
+
