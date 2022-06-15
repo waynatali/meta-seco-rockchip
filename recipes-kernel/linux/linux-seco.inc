@@ -22,4 +22,3 @@ do_patch:append() {
 		sed -i -e '1s|^#!.*python[23]*|#!/usr/bin/env ${PYTHON_PN}|' $s
 	done
 }
-

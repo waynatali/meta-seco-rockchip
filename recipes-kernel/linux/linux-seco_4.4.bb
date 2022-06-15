@@ -6,7 +6,7 @@ require linux-seco.inc
 inherit freeze-rev
 
 KERNEL_SRC ?= "git://git.seco.com/pub/rockchip/linux-seco-rk4.4.git"
-PROTOCOL ?= "protocol=ssh"
+PROTOCOL ?= "protocol=https"
 
 REPO_USER ?= ""
 
