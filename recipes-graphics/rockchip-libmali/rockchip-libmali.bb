@@ -14,12 +14,12 @@ inherit freeze-rev
 SRC_URI = " \
 	git://github.com/JeffyCN/mirrors.git;protocol=https;branch=libmali; \
 "
-SRCREV = "17dd6012f3f63bf7803717b6476d7b267027234a"
+SRCREV = "ff98f49e361247445214c14f4a6bd4ce2e3d7804"
 S = "${WORKDIR}/git"
 
 DEPENDS = "libdrm"
 
-PROVIDES += "virtual/egl virtual/libgles1 virtual/libgles2 virtual/libgles3 virtual/libgbm"
+PROVIDES:append = " virtual/egl virtual/libgles1 virtual/libgles2 virtual/libgles3 virtual/libgbm"
 
 MALI_GPU ??= "midgard-t86x"
 MALI_VERSION ??= "r18p0"
@@ -28,11 +28,10 @@ MALI_PLATFORM ??= "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'wayland',
 
 # The utgard DDK and 'without-cl' subversion are not providing OpenCL.
 # The ICD OpenCL implementation should work with opencl-icd-loader.
-PROVIDES += "${@ 'virtual/opencl-icd' if not d.getVar('MALI_GPU').startswith('utgard') and d.getVar('MALI_SUBVERSION') != 'without-cl' else ''}"
-
 RDEPENDS:${PN} = " \
 	${@ 'wayland' if 'wayland' == d.getVar('MALI_PLATFORM') else ''} \
 	${@ 'libx11 libxcb' if 'x11' == d.getVar('MALI_PLATFORM') else ''} \
+	${@ 'opencl-icd-loader' if not d.getVar('MALI_GPU').startswith('utgard') and d.getVar('MALI_SUBVERSION') != 'without-cl' else ''} \
 "
 
 DEPENDS:append = " \
@@ -48,23 +47,23 @@ ASNEEDED = ""
 python __anonymous() {
     pn = d.getVar('PN')
     pn_dev = pn + "-dev"
-    d.setVar("DEBIAN_NOAUTONAME_" + pn, "1")
-    d.setVar("DEBIAN_NOAUTONAME_" + pn_dev, "1")
+    d.setVar("DEBIAN_NOAUTONAME:" + pn, "1")
+    d.setVar("DEBIAN_NOAUTONAME:" + pn_dev, "1")
 
     for p in (("libegl", "libegl1"),
               ("libgles1", "libglesv1-cm1"),
               ("libgles2", "libglesv2-2"),
               ("libgles3",)):
         pkgs = " " + " ".join(p)
-        d.appendVar("RREPLACES_" + pn, pkgs)
-        d.appendVar("RPROVIDES_" + pn, pkgs)
-        d.appendVar("RCONFLICTS_" + pn, pkgs)
+        d.appendVar("RREPLACES:" + pn, pkgs)
+        d.appendVar("RPROVIDES:" + pn, pkgs)
+        d.appendVar("RCONFLICTS:" + pn, pkgs)
 
         # For -dev, the first element is both the Debian and original name
         pkgs = " " + p[0] + "-dev"
-        d.appendVar("RREPLACES_" + pn_dev, pkgs)
-        d.appendVar("RPROVIDES_" + pn_dev, pkgs)
-        d.appendVar("RCONFLICTS_" + pn_dev, pkgs)
+        d.appendVar("RREPLACES:" + pn_dev, pkgs)
+        d.appendVar("RPROVIDES:" + pn_dev, pkgs)
+        d.appendVar("RCONFLICTS:" + pn_dev, pkgs)
 }
 
 inherit meson pkgconfig
@@ -85,15 +84,18 @@ do_install:append () {
 }
 
 INSANE_SKIP:${PN} = "already-stripped ldflags dev-so textrel"
+INSANE_SKIP:${PN}-dev = "staticdev"
 
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INHIBIT_PACKAGE_STRIP = "1"
 
-RPROVIDES:${PN} += "libmali"
+RPROVIDES:${PN}:append = " libmali"
 
-# Library symlinks are required by utgard DDK(for internal dlopen)
-FILES:${PN} += "${libdir}/lib*.so"
+FILES:${PN}-staticdev = ""
 FILES:${PN}-dev = " \
 	${includedir} \
+	${libdir}/lib*.a \
 	${libdir}/pkgconfig \
 "
+# Any remaining files, including .so links
+FILES:${PN} = "*"

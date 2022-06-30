@@ -2,7 +2,7 @@ DESCRIPTION = "U-Boot suppporting SECO boards based on Rockchip application proc
 
 PV = "2017.09+git${SRCPV}"
 
-LICENSE = "GPLv2+"
+LICENSE = "GPL-2.0-or-later"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=a2c678cfd4a4d97135585cad908541c6"
 
 DEPENDS:append = " rk-binary-native coreutils-native flex-native bison-native dtc-native"

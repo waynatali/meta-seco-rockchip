@@ -14,9 +14,9 @@ PV:append = "+git${SRCPV}"
 inherit freeze-rev
 
 SRC_URI = " \
-	git://github.com/JeffyCN/mirrors.git;protocol=https;branch=linux-rga-im2d; \
+	git://github.com/JeffyCN/mirrors.git;protocol=https;branch=linux-rga; \
 "
-SRCREV = "1e2f0dbb838de3512a8a29143196d7b5e460e1ca"
+SRCREV = "274b345f976a7b6b05bf74dcf8faf7b2e28b813d"
 S = "${WORKDIR}/git"
 
 inherit meson pkgconfig

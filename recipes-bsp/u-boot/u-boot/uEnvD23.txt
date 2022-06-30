@@ -18,4 +18,4 @@ stderr=serial
 stdout=serial
 vendor=seco
 usb_boot=fatload usb 0:1 ${kernel_loadaddr} ${kernel_file}; fatload usb 0:1 ${fdt_loadaddr} ${fdt_file}; booti ${kernel_loadaddr} - ${fdt_loadaddr}
-bootargs=root=/dev/sda2 rw rootwait earlycon=uart8250,mmio32,0xff160000 swiotlb=1 console=ttyFIQ0
+bootargs=root=/dev/sda2 rootwait earlycon=uart8250,mmio32,0xff160000 swiotlb=1 console=ttyFIQ0

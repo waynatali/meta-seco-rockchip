@@ -11,4 +11,4 @@ ${WIC_DEVDATA_PARTITION}
 ${WIC_SYSDATA_PARTITION}
 ${WIC_APPDATA_PARTITION}
 
-bootloader --ptable gpt --append="console=tty1 console=ttyFIQ0,115200n8 rw rootfstype=${ROOT_FSTYPE} init=/sbin/init"
+bootloader --ptable gpt --append="console=tty1 console=ttyFIQ0,115200n8 rootfstype=${ROOT_FSTYPE}"

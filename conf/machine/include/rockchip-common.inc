@@ -20,9 +20,8 @@ PREFERRED_PROVIDER_virtual/bootloader = "u-boot-seco"
 PREFERRED_VERSION_u-boot-toradex = "2017.09%"
 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-seco"
-
-PREFERRED_VERSION_linux-seco ?= "4.4%"
-LINUXLIBCVERSION ?= "4.4%"
+PREFERRED_VERSION_linux-seco ?= "5.10%"
+LINUXLIBCVERSION ?= "5.10%"
 
 # Custom kernel might not support newest python
 PACKAGECONFIG:remove:pn-perf = " scripting"
@@ -74,7 +73,7 @@ IMAGE_BOOT_FILES ?= " \
 
 RK_POST_ROOTFS_SCRIPTS ?= ""
 RK_OVERLAY_DIRS ?= ""
-BB_HASHBASE_WHITELIST:append = " RK_POST_ROOTFS_SCRIPTS RK_OVERLAY_DIRS"
+BB_BASEHASH_IGNORE_VARS:append = " RK_POST_ROOTFS_SCRIPTS RK_OVERLAY_DIRS"
 
 # <fslabel:mountpoint> e.g. "oem:/oem userdata:/userdata"
 RK_EXTRA_VOLUMES ?= ""

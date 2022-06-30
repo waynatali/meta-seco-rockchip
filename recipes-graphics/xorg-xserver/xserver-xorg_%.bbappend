@@ -4,13 +4,13 @@
 DEPENDS:append = " automake-native autoconf-native util-macros-native font-util-native xtrans-native libxshmfence rockchip-librga"
 
 SRCREV = "${AUTOREV}"
-SRC_URI:append = " git://github.com/JeffyCN/xorg-xserver;protocol=https;nobranch=1;branch=${PV}_2022_01_17;"
+SRC_URI:append = " git://github.com/JeffyCN/xorg-xserver;protocol=https;nobranch=1;branch=${PV}_2022_05_23;"
 SRC_URI:remove = "https://www.x.org/releases//individual/xserver/xorg-server-${PV}.tar.bz2"
 S = "${WORKDIR}/git"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
-SRC_URI += "file://20-modesetting.conf"
+SRC_URI:append = " file://20-modesetting.conf"
 
 do_configure:prepend() {
     NOCONFIGURE="yes" ${S}/autogen.sh

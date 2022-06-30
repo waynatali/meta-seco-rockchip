@@ -22,6 +22,7 @@ SRC_URI += " \
 	git://github.com/JeffyCN/mirrors.git;protocol=https;branch=rkbin;name=rkbin;destsuffix=rkbin; \
 	file://flash_d23.sh \
 	file://uEnvD23.txt \
+	file://boot.cmd \
 "
 SRC_URI:remove = "file://0001-riscv32-Use-double-float-ABI-for-rv32.patch"
 SRC_URI:remove = "file://0001-riscv-fix-build-with-binutils-2.38.patch"
@@ -46,8 +47,7 @@ do_configure:prepend() {
 		${S}/arch/arm/mach-rockchip/make_fit_atf.py
 
 	# Remove unneeded stages from make.sh
-	#sed -i -e '/^select_tool/d' -e '/^clean/d' -e '/^\t*make/d' ${S}/make.sh
-	sed -i -e '650,710{/select_tool/d;}' -e '/^clean/d' -e '/^\t*make/d' ${S}/make.sh
+	sed -i -e 's/^select_toolchain$//g' -e '/^clean/d' -e '/^\t*make/d' ${S}/make.sh
 
 	if [ "x${RK_ALLOW_PREBUILT_UBOOT}" = "x1" ]; then
 		# Copy prebuilt images
@@ -107,9 +107,13 @@ do_deploy:append() {
 		install "${binary}" "${DEPLOYDIR}/${binary}-${PV}"
 		ln -sf "${binary}-${PV}" "${DEPLOYDIR}/${binary}"
 	done
-	
+	cp ../boot.cmd ${B}
+	sed -i -e '/root_dev/ s/rootwait/rootwait rootfstype=${ROOT_FSTYPE}/g' boot.cmd
+	./tools/mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n "Boot Script" -d boot.cmd seco_boot.scr
 	install -m 0755 *_loader*.bin ${DEPLOYDIR}
 	install -m 0755 ${WORKDIR}/rkbin/tools/upgrade_tool ${DEPLOYDIR}
 	install -m 0755 ${WORKDIR}/flash_d23.sh ${DEPLOYDIR}
 	install -m 0755 ${WORKDIR}/uEnvD23.txt ${DEPLOYDIR}
+	install -m 0755 seco_boot.scr ${DEPLOYDIR}
+	sed -i -e '/^bootargs/ s/$/ rootfstype=${ROOT_FSTYPE}/g' ${DEPLOYDIR}/uEnvD23.txt
 }
