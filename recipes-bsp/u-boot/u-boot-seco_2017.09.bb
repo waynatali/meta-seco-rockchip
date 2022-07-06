@@ -34,6 +34,9 @@ DEPENDS:append = " ${PYTHON_PN}-native"
 # Needed for packing BSP u-boot
 DEPENDS:append = " coreutils-native ${PYTHON_PN}-pyelftools-native"
 
+# Open Source Flasher
+DEPENDS:append = " rkdeveloptool-native"
+
 do_configure:prepend() {
 	# Make sure we use /usr/bin/env ${PYTHON_PN} for scripts
 	for s in `grep -rIl python ${S}`; do

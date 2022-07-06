@@ -2,6 +2,8 @@
 
 set -e
 
+FLASHTOOL="${FLASHTOOL:-./rkdeveloptool}"
+
 usage()
 {
 	# Display Help
@@ -19,8 +21,11 @@ usage()
 
 wic_name=""
 
-	fi
-}
+if ! [ -e $FLASHTOOL ]
+then
+	echo "$FLASHTOOL not found"
+	usage 2
+fi
 
 # Get the options
 while getopts ":hba:" option; do
@@ -29,15 +34,15 @@ while getopts ":hba:" option; do
 			usage
 			;;
 		b) # Upgrade Loader and Download Images
-			sudo ./upgrade_tool UL px30_loader_v1.11.115.bin
-			sudo ./upgrade_tool DI -u uboot.img
-			sudo ./upgrade_tool DI -t trust.img
+			${FLASHTOOL} UL px30_loader_v1.11.115.bin
+			${FLASHTOOL} WL 0x4000 uboot.img
+			${FLASHTOOL} WL 0x6000 trust.img
 			exit
 			;;
 		a) # Upgrade Loader and Write LBA
 			wic_name=$OPTARG
-			sudo ./upgrade_tool UL px30_loader_v1.11.115.bin
-			sudo ./upgrade_tool WL 0 "$wic_name"
+			${FLASHTOOL} UL px30_loader_v1.11.115.bin
+			${FLASHTOOL} WL 0 "$wic_name"
 			exit
 			;;
 		*) # Invalid option
