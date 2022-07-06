@@ -49,6 +49,9 @@ do_configure:prepend() {
 	# Remove unneeded stages from make.sh
 	sed -i -e 's/^select_toolchain$//g' -e '/^clean/d' -e '/^\t*make/d' ${S}/make.sh
 
+	# Prevent shell compat issue
+	sed -e "s|echo '\\\#include|printf '#include|g" -i "${S}/scripts/Makefile.lib"
+
 	if [ "x${RK_ALLOW_PREBUILT_UBOOT}" = "x1" ]; then
 		# Copy prebuilt images
 		if [ -e "${S}/${UBOOT_BINARY}" ]; then
