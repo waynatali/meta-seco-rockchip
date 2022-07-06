@@ -32,7 +32,7 @@ SRCREV_FORMAT = "default_rkbin"
 DEPENDS:append = " ${PYTHON_PN}-native"
 
 # Needed for packing BSP u-boot
-DEPENDS:append = " coreutils-native ${PYTHON_PN}-pyelftools-native"
+DEPENDS:append = " bc-native coreutils-native ${PYTHON_PN}-pyelftools-native"
 
 do_configure:prepend() {
 	# Make sure we use /usr/bin/env ${PYTHON_PN} for scripts
