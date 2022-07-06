@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 usage()
 {
 	# Display Help
@@ -12,18 +14,11 @@ usage()
 	echo "-a <wic image file>"
 	echo "      Burn wic image (uboot and rootfs) into emmc."
 	1>&2;
-	exit;
+	exit $0;
 }
 
 wic_name=""
-status=$?
 
-status_check()
-{
-	if [ $status -eq 0 ];then
-		echo "Success!"  1>&2; exit;
-	else
-		echo "Something went wrong!"  1>&2; exit;
 	fi
 }
 
@@ -37,16 +32,16 @@ while getopts ":hba:" option; do
 			sudo ./upgrade_tool UL px30_loader_v1.11.115.bin
 			sudo ./upgrade_tool DI -u uboot.img
 			sudo ./upgrade_tool DI -t trust.img
-			status_check
+			exit
 			;;
 		a) # Upgrade Loader and Write LBA
 			wic_name=$OPTARG
 			sudo ./upgrade_tool UL px30_loader_v1.11.115.bin
 			sudo ./upgrade_tool WL 0 "$wic_name"
-			status_check
+			exit
 			;;
 		*) # Invalid option
-			usage
+			usage 1
 			;;
 	esac
 done
@@ -54,5 +49,5 @@ shift "$(( OPTIND - 1 ))"
 
 string = "$1"
 if [ -z "$1" ] || [ "${string:0:1}" != "-" ] || [ "$1" == "-" ]; then
-    usage
+    usage 1
 fi
