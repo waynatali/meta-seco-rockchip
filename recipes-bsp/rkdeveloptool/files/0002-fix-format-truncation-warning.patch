@@ -1,0 +1,28 @@
+From 5406616c76109eb3c51b9412be07812ea9a08a05 Mon Sep 17 00:00:00 2001
+From: Natalia Kovalenko <waykovalenko@gmail.com>
+Date: Wed, 6 Jul 2022 10:50:28 +0200
+Subject: [PATCH 2/2] fix format-truncation warning
+
+---
+ main.cpp | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/main.cpp b/main.cpp
+index 72bd94b..7439c48 100644
+--- a/main.cpp
++++ b/main.cpp
+@@ -1489,8 +1489,10 @@ static bool saveEntry(FILE* outFile, char* path, rk_entry_type type,
+ 
+ static inline uint32_t convertChipType(const char* chip) {
+ 	char buffer[5];
++	char source[5];
++	memcpy(source, chip, strlen(chip) > 4?5:strlen(chip) + 1);
+ 	memset(buffer, 0, sizeof(buffer));
+-	snprintf(buffer, sizeof(buffer), "%s", chip);
++	snprintf(buffer, sizeof(buffer), "%s", source);
+ 	return buffer[0] << 24 | buffer[1] << 16 | buffer[2] << 8 | buffer[3];
+ }
+ 
+-- 
+2.25.1
+
