@@ -15,13 +15,12 @@ usage()
 	echo "-b    Burn uboot into emmc."
 	echo "-a <wic image file>"
 	echo "      Burn wic image (uboot and rootfs) into emmc."
-	1>&2;
-	exit $0;
+	exit $1;
 }
 
 wic_name=""
 
-if ! [ -e $FLASHTOOL ]
+if [ ! -f $FLASHTOOL ]
 then
 	echo "$FLASHTOOL not found"
 	usage 2
@@ -33,16 +32,21 @@ while getopts ":hba:" option; do
 		h) # display help
 			usage
 			;;
-		b) # Upgrade Loader and Download Images
-			${FLASHTOOL} UL px30_loader_v1.11.115.bin
-			${FLASHTOOL} WL 0x4000 uboot.img
-			${FLASHTOOL} WL 0x6000 trust.img
+		b) # Run miniloader and write uboot and trust images
+			${FLASHTOOL} db px30_loader_v1.11.115.bin
+			sleep 3
+			${FLASHTOOL} wl 0x4000 uboot.img
+			${FLASHTOOL} wl 0x6000 trust.img
 			exit
 			;;
-		a) # Upgrade Loader and Write LBA
+		a) # Run miniloader and write the whole image
 			wic_name=$OPTARG
-			${FLASHTOOL} UL px30_loader_v1.11.115.bin
-			${FLASHTOOL} WL 0 "$wic_name"
+			if [[ "$OPTARG" == *".wic"* ]]; then
+				( ${FLASHTOOL} db px30_loader_v1.11.115.bin && sleep 3 ) || echo "Bootloader is already in eMMC"
+				${FLASHTOOL} wl 0 "$wic_name"
+			else
+				echo "Only *.wic image file is supported!"
+			fi
 			exit
 			;;
 		*) # Invalid option
@@ -52,7 +56,7 @@ while getopts ":hba:" option; do
 done
 shift "$(( OPTIND - 1 ))"
 
-string = "$1"
+string="$1"
 if [ -z "$1" ] || [ "${string:0:1}" != "-" ] || [ "$1" == "-" ]; then
     usage 1
 fi
