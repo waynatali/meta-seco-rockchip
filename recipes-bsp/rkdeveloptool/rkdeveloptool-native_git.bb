@@ -4,8 +4,8 @@
 SUMMARY = "Command line tool to flash bootloader and rootfs images"
 DESCRIPTION = "Rkdeveloptool is an opensource version of Rockchip upgrade_tool to communicate with Rockusb devices"
 HOMEPAGE = "http://opensource.rock-chips.com/wiki_Rkdeveloptool"
-LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
+LICENSE = "GPLv2"
+LIC_FILES_CHKSUM = "file://license.txt;md5=ea9445d9cc03d508cf6bb769d15a54ef"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
