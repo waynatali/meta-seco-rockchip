@@ -46,6 +46,7 @@ while getopts ":hba:" option; do
 				${FLASHTOOL} wl 0 "$wic_name"
 			else
 				echo "Only *.wic image file is supported!"
+				usage 1
 			fi
 			exit
 			;;
