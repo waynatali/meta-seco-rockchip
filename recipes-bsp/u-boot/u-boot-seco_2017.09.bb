@@ -29,10 +29,13 @@ SRC_URI:remove = "file://0001-riscv-fix-build-with-binutils-2.38.patch"
 
 SRCREV_FORMAT = "default_rkbin"
 
-DEPENDS:append = " ${PYTHON_PN}-native"
+DEPENDS:append = " ${PYTHON_PN}-native rkdeveloptool-native"
 
 # Needed for packing BSP u-boot
 DEPENDS:append = " bc-native coreutils-native ${PYTHON_PN}-pyelftools-native"
+
+LICENSE:append = " & LICENSE.rockchip"
+LIC_FILES_CHKSUM:append = " file://${RKBASE}/licenses/LICENSE.rockchip;md5=d63890e209bf038f44e708bbb13e4ed9"
 
 do_configure:prepend() {
 	# Make sure we use /usr/bin/env ${PYTHON_PN} for scripts

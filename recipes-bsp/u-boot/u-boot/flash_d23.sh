@@ -1,5 +1,9 @@
 #!/bin/bash
 
+set -e
+
+FLASHTOOL="${FLASHTOOL:-./rkdeveloptool}"
+
 usage()
 {
 	# Display Help
@@ -11,21 +15,16 @@ usage()
 	echo "-b    Burn uboot into emmc."
 	echo "-a <wic image file>"
 	echo "      Burn wic image (uboot and rootfs) into emmc."
-	1>&2;
-	exit;
+	exit $1;
 }
 
 wic_name=""
-status=$?
 
-status_check()
-{
-	if [ $status -eq 0 ];then
-		echo "Success!"  1>&2; exit;
-	else
-		echo "Something went wrong!"  1>&2; exit;
-	fi
-}
+if [ ! -f $FLASHTOOL ]
+then
+	echo "$FLASHTOOL not found"
+	usage 2
+fi
 
 # Get the options
 while getopts ":hba:" option; do
@@ -33,26 +32,32 @@ while getopts ":hba:" option; do
 		h) # display help
 			usage
 			;;
-		b) # Upgrade Loader and Download Images
-			sudo ./upgrade_tool UL px30_loader_v1.11.115.bin
-			sudo ./upgrade_tool DI -u uboot.img
-			sudo ./upgrade_tool DI -t trust.img
-			status_check
+		b) # Run miniloader and write uboot and trust images
+			${FLASHTOOL} db px30_loader_v1.11.115.bin
+			sleep 3
+			${FLASHTOOL} wl 0x4000 uboot.img
+			${FLASHTOOL} wl 0x6000 trust.img
+			exit
 			;;
-		a) # Upgrade Loader and Write LBA
+		a) # Run miniloader and write the whole image
 			wic_name=$OPTARG
-			sudo ./upgrade_tool UL px30_loader_v1.11.115.bin
-			sudo ./upgrade_tool WL 0 "$wic_name"
-			status_check
+			if [[ "$OPTARG" == *".wic"* ]]; then
+				( ${FLASHTOOL} db px30_loader_v1.11.115.bin && sleep 3 ) || echo "Bootloader is already in eMMC"
+				${FLASHTOOL} wl 0 "$wic_name"
+			else
+				echo "Only *.wic image file is supported!"
+				usage 1
+			fi
+			exit
 			;;
 		*) # Invalid option
-			usage
+			usage 1
 			;;
 	esac
 done
 shift "$(( OPTIND - 1 ))"
 
-string = "$1"
+string="$1"
 if [ -z "$1" ] || [ "${string:0:1}" != "-" ] || [ "$1" == "-" ]; then
-    usage
+    usage 1
 fi

@@ -1,0 +1,25 @@
+From 8301ca7d9e1ff20da93484cef262d28e5b3360af Mon Sep 17 00:00:00 2001
+From: Natalia Kovalenko <waykovalenko@gmail.com>
+Date: Wed, 6 Jul 2022 01:49:20 +0200
+Subject: [PATCH] Treat format-truncation as warning
+
+---
+ Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 1b6385d..ad76cd0 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -3,7 +3,7 @@
+ SUBDIRS =
+ DIST_SUBDIRS = cfg
+ 
+-AM_CPPFLAGS = -Wall -Werror -Wextra -Wreturn-type -fno-strict-aliasing -D_FILE_OFFSET_BITS=64 -D_LARGE_FILE $(LIBUSB1_CFLAGS)
++AM_CPPFLAGS = -Wall -Werror -Wno-error=format-truncation -Wextra -Wreturn-type -fno-strict-aliasing -D_FILE_OFFSET_BITS=64 -D_LARGE_FILE $(LIBUSB1_CFLAGS)
+ 
+ bin_PROGRAMS = rkdeveloptool
+ rkdeveloptool_SOURCES = main.cpp \
+-- 
+2.25.1
+
