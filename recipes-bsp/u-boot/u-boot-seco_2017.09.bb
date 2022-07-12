@@ -53,7 +53,7 @@ do_configure:prepend() {
 	sed -i -e 's/^select_toolchain$//g' -e '/^clean/d' -e '/^\t*make/d' ${S}/make.sh
 
 	# Prevent shell compat issue
-	sed -e "s|echo '\\\#include|printf '#include|g" -i "${S}/scripts/Makefile.lib"
+	sed -e '/at the end of the file/a pound := \\\#' -e "s|echo '\\\#include|echo '\$\(pound\)include|g" -i "${S}/scripts/Makefile.lib"
 
 	if [ "x${RK_ALLOW_PREBUILT_UBOOT}" = "x1" ]; then
 		# Copy prebuilt images
