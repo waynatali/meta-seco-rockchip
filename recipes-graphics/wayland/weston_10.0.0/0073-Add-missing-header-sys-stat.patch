@@ -1,0 +1,26 @@
+From 97422086ad89bcc97fe163a961321442321842fc Mon Sep 17 00:00:00 2001
+From: Natalia Kovalenko <waykovalenko@gmail.com>
+Date: Mon, 18 Jul 2022 17:02:25 +0200
+Subject: [PATCH 73/73] Add missing header sys/stat.h
+
+Fix error: field has incomplete type 'struct stat' in
+../weston-10.0.0/libweston/backend-drm/drm-internal.h:355:14
+---
+ libweston/backend-drm/drm-internal.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/libweston/backend-drm/drm-internal.h b/libweston/backend-drm/drm-internal.h
+index 3fc5f9b9..113faa06 100644
+--- a/libweston/backend-drm/drm-internal.h
++++ b/libweston/backend-drm/drm-internal.h
+@@ -40,6 +40,7 @@
+ #include <linux/vt.h>
+ #include <assert.h>
+ #include <sys/mman.h>
++#include <sys/stat.h>
+ #include <time.h>
+ 
+ 
+-- 
+2.25.1
+

@@ -26,18 +26,18 @@ LINUXLIBCVERSION ?= "5.10%"
 # Custom kernel might not support newest python
 PACKAGECONFIG:remove:pn-perf = " scripting"
 
-PREFERRED_PROVIDER_virtual/egl ?= "rockchip-libmali"
-PREFERRED_PROVIDER_virtual/libgles1 ?= "rockchip-libmali"
-PREFERRED_PROVIDER_virtual/libgles2 ?= "rockchip-libmali"
-PREFERRED_PROVIDER_virtual/libgles3 ?= "rockchip-libmali"
-PREFERRED_PROVIDER_virtual/libopencl ?= "rockchip-libmali"
-PREFERRED_PROVIDER_virtual/libgbm ?= "rockchip-libmali"
+PREFERRED_PROVIDER_virtual/egl ?= "${@'rockchip-libmali' if d.getVar('TCLIBC') == 'glibc' else 'mesa'}"
+PREFERRED_PROVIDER_virtual/libgles1 ?= "${@'rockchip-libmali' if d.getVar('TCLIBC') == 'glibc' else 'mesa'}"
+PREFERRED_PROVIDER_virtual/libgles2 ?= "${@'rockchip-libmali' if d.getVar('TCLIBC') == 'glibc' else 'mesa'}"
+PREFERRED_PROVIDER_virtual/libgles3 ?= "${@'rockchip-libmali' if d.getVar('TCLIBC') == 'glibc' else 'mesa'}"
+PREFERRED_PROVIDER_virtual/libopencl ?= "${@'rockchip-libmali' if d.getVar('TCLIBC') == 'glibc' else 'mesa'}"
+PREFERRED_PROVIDER_virtual/libgbm ?= "${@'rockchip-libmali' if d.getVar('TCLIBC') == 'glibc' else 'mesa'}"
 PACKAGECONFIG:pn-wayland ?= "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'no-egl', '', d)}"
 
-DEPENDS:append:pn-mesa-gl = " rockchip-libmali"
+DEPENDS:append:pn-mesa-gl = "${@'rockchip-libmali' if d.getVar('TCLIBC') == 'glibc' else ''}"
 
-PREFERRED_PROVIDER_virtual/libgl ?= "mesa-gl"
-PREFERRED_PROVIDER_virtual/mesa ?= "mesa-gl"
+PREFERRED_PROVIDER_virtual/libgl ?= "${@'mesa-gl' if d.getVar('TCLIBC') == 'glibc' else 'mesa'}"
+PREFERRED_PROVIDER_virtual/mesa ?= "${@'mesa-gl' if d.getVar('TCLIBC') == 'glibc' else 'mesa'}"
 
 PREFERRED_RPROVIDER_lib32-initd-functions = "lib32-initscripts"
 
