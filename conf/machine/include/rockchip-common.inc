@@ -79,7 +79,10 @@ BB_BASEHASH_IGNORE_VARS:append = " RK_POST_ROOTFS_SCRIPTS RK_OVERLAY_DIRS"
 RK_EXTRA_VOLUMES ?= ""
 
 ROOTFS_POSTPROCESS_COMMAND:append = " do_post_rootfs;"
-do_rootfs[depends] += "rsync-native:do_populate_sysroot"
+do_rootfs[depends] += " \
+	rsync-native:do_populate_sysroot \
+	virtual/bootloader:do_deploy \
+"
 do_post_rootfs() {
 	for volume in ${RK_EXTRA_VOLUMES};do
 		echo "Creating ${volume##*:} for ${volume%:*}(fslabel)..."
