@@ -1,7 +1,7 @@
 # Copyright (C) 2019, Fuzhou Rockchip Electronics Co., Ltd
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-EXTRA_OECONF:append = " \
+EXTRA_OECONF:append:seco-px30-d23 = " \
 	--disable-intel \
 	--disable-radeon \
 	--disable-amdgpu \

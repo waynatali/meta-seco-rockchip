@@ -34,7 +34,7 @@ PREFERRED_PROVIDER_virtual/libopencl ?= "${@'rockchip-libmali' if d.getVar('TCLI
 PREFERRED_PROVIDER_virtual/libgbm ?= "${@'rockchip-libmali' if d.getVar('TCLIBC') == 'glibc' else 'mesa'}"
 PACKAGECONFIG:pn-wayland ?= "${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'no-egl', '', d)}"
 
-DEPENDS:append:pn-mesa-gl = "${@'rockchip-libmali' if d.getVar('TCLIBC') == 'glibc' else ''}"
+DEPENDS:append:pn-mesa-gl = "${@' rockchip-libmali' if d.getVar('TCLIBC') == 'glibc' else ''}"
 
 PREFERRED_PROVIDER_virtual/libgl ?= "${@'mesa-gl' if d.getVar('TCLIBC') == 'glibc' else 'mesa'}"
 PREFERRED_PROVIDER_virtual/mesa ?= "${@'mesa-gl' if d.getVar('TCLIBC') == 'glibc' else 'mesa'}"
