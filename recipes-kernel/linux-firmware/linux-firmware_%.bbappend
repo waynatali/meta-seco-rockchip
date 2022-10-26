@@ -14,7 +14,8 @@ do_install:append:seco-px30-d23() {
 	install -m 0644 ${WORKDIR}/murata-fw/cyfmac43455-sdio.bin ${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac43455-sdio.bin
 	install -m 0644 ${WORKDIR}/murata-fw/cyfmac43455-sdio.1MW.clm_blob ${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac43455-sdio.clm_blob
 	#Unset bit 27 in boardflags3 and it will select either internal or external clock signal.
-	sed -i 's/boardflags3.*/boardflags3=0x40200100/g' ${WORKDIR}/murata-nvram/cyfmac43455-sdio.1MW.txt
+	#External clock support added in device tree for REVC, for other revisions uncomment this line below if needed as workaround.
+	#sed -i 's/boardflags3.*/boardflags3=0x40200100/g' ${WORKDIR}/murata-nvram/cyfmac43455-sdio.1MW.txt
 	install -m 0644 ${WORKDIR}/murata-nvram/cyfmac43455-sdio.1MW.txt ${D}${nonarch_base_libdir}/firmware/brcm/brcmfmac43455-sdio.txt
 }
 
