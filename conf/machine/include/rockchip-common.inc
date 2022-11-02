@@ -16,8 +16,8 @@ MACHINEOVERRIDES .= ":rockchip"
 MACHINE_FIRMWARE ?= ""
 MACHINE_EXTRA_RRECOMMENDS += "${MACHINE_FIRMWARE}"
 
-PREFERRED_PROVIDER_virtual/bootloader = "u-boot-seco"
-PREFERRED_VERSION_u-boot-toradex = "2017.09%"
+PREFERRED_PROVIDER_virtual/bootloader ?= "u-boot-seco"
+PREFERRED_VERSION_u-boot-toradex ?= "2017.09%"
 
 PREFERRED_PROVIDER_virtual/kernel ?= "linux-seco"
 PREFERRED_VERSION_linux-seco ?= "5.10%"

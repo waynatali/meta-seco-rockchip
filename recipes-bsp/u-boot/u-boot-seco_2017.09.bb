@@ -6,11 +6,11 @@ require recipes-bsp/u-boot/u-boot.inc
 
 inherit auto-patch
 
-PATCHPATH = "${CURDIR}/u-boot"
+PATCHPATH = "${CURDIR}/u-boot-seco"
 
 inherit python3-dir
 
-FILESEXTRAPATHS:prepend := "${THISDIR}/u-boot:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 inherit freeze-rev
 
