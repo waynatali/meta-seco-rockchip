@@ -7,11 +7,11 @@
 # http://opensource.rock-chips.com/wiki_Partitions
 # https://docs.yoctoproject.org/ref-manual/kickstart.html
 
-bootloader --ptable gpt --append="console=tty1 console=ttyFIQ0,115200n8 rootfstype=${ROOT_FSTYPE}"
+bootloader --ptable gpt --timeout=${WIC_BOOTLOADER_TIMEOUT} --append=" console=tty1 console=ttyFIQ0,115200n8 rootwait rootfstype=${ROOT_FSTYPE}"
 part --source rawcopy --sourceparams="file=idblock.img" --offset 32 --fixed-size 4000K --no-table
 part --source rawcopy --sourceparams="file=uboot.img" --part-name uboot --offset 8192 --fixed-size 4096K
 part --source rawcopy --sourceparams="file=trust.img" --part-name trust --offset 12288 --fixed-size 4096K
-part /boot --sourceparams="loader=u-boot" --source bootimg-partition --label boot --offset 16384  --size 114688K --active --fstype=vfat --use-uuid 
+part --source bootimg-efi --sourceparams="loader=${EFI_PROVIDER}" --label ${BOOT_PARTITION_LABEL} --offset 16384 --active --fstype=vfat --part-type C12A7328-F81F-11D2-BA4B-00A0C93EC93B --use-uuid
 ${WIC_ROOTA_PARTITION}
 ${WIC_ROOTB_PARTITION}
 ${WIC_DEVDATA_PARTITION}

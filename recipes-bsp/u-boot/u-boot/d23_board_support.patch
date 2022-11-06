@@ -3757,7 +3757,7 @@ new file mode 100644
 index 0000000..2de8a60
 --- /dev/null
 +++ b/configs/seco_px30_d23_defconfig
-@@ -0,0 +1,175 @@
+@@ -0,0 +1,177 @@
 +CONFIG_ARM=y
 +CONFIG_ARCH_ROCKCHIP=y
 +CONFIG_SPL_LIBCOMMON_SUPPORT=y
@@ -3923,7 +3923,9 @@ index 0000000..2de8a60
 +CONFIG_LZ4=y
 +CONFIG_LZO=y
 +CONFIG_ERRNO_STR=y
-+# CONFIG_EFI_LOADER is not set
++CONFIG_EFI_LOADER=y
++CONFIG_CMD_EFIDEBUG=y
++CONFIG_CMD_NVEDIT_EFI=y
 +CONFIG_TEST_ROCKCHIP=y
 +CONFIG_SECO_ENV_AUTOSET=y
 +# CONFIG_SECO_ENV_MANEGER is not set
@@ -3938,7 +3940,7 @@ new file mode 100644
 index 0000000..0ceb387
 --- /dev/null
 +++ b/include/configs/seco_environment.h
-@@ -0,0 +1,365 @@
+@@ -0,0 +1,404 @@
 +#ifndef __SECO_ENVIRONMENT_H
 +#define __SECO_ENVIRONMENT_H
 +
@@ -4222,6 +4224,43 @@ index 0000000..0ceb387
 +	"nfs_netmask="__stringify(CONFIG_NETMASK)"\0" \
 +	"nfs_path="__stringify(DEF_NFS_PATH)"\0"
 +
++#ifdef CONFIG_EFI_LOADER
++
++#define EFI_SYSTEM_PARTITION    3
++#define ENV_EFI \
++	"efi_partition="__stringify(EFI_SYSTEM_PARTITION)"\0" \
++	"efi_file=EFI/BOOT/bootaa64.efi\0" \
++	"efi_device_id="__stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
++	"efi_load=mmc dev ${efi_device_id}; fatload mmc ${efi_device_id}:${efi_partition} ${kernel_loadaddr} ${efi_file}\0"
++
++#define ENV_CMD_SET_BOOT \
++  	"if test \"${bootusb}\" = \"true\"; then " \
++  	"  for dpart in 1 2; do " \
++  	"   if load usb 0:${dpart} 0x00500000" __stringify(ENV_UENV_FILE_NAME)"; then " \
++  	"     env import -t 0x00500000 600; run usb_boot; fi; " \
++  	"  done; " \
++  	"fi; " \
++	"mmc dev ${bootscript_device_id}; " \
++	"if run bootscript_load_usdhci2ram; then " \
++		"echo ==> Running bootscript mode... ; " \
++		" source "__stringify(ENV_BOOTSCRIPT_LOADADDR)"; " \
++	"fi; " \
++	"run bootargs_base; " \
++	"run fdt_load2ram; " \
++	"run root_mount; " \
++	"run bootargs_base; " \
++	"echo Trying to boot via UEFI variables Boot####, BootOrder, and BootNext... ; " \
++	"bootefi bootmgr ${fdt_loadaddr}; " \
++	"if test $? -ne 0; then " \
++		"echo No entries from ubootefi.var... Running directly via UEFI binary... ; " \
++		"run efi_load; " \
++		"bootefi ${kernel_loadaddr} ${fdt_loadaddr}; " \
++	"fi;"
++
++#else /*Boot environment without UEFI support*/
++
++#define ENV_EFI
++
 +#ifndef CONFIG_OF_LIBFDT_OVERLAY
 +
 +#define ENV_CMD_SET_BOOT \
@@ -4278,6 +4317,7 @@ index 0000000..0ceb387
 +	"fi\0"
 +
 +#endif  /* CONFIG_OF_LIBFDT_OVERLAY */
++#endif /* CONFIG_EFI_LOADER */
 +
 +#ifndef CONFIG_PREBOOT
 +#define CONFIG_PREBOOT
@@ -4301,6 +4341,7 @@ index 0000000..0ceb387
 +	ENV_ROOT \
 +	ENV_PREBOOT \
 +	ENV_VIDEO_DEFAULT \
++	ENV_EFI \
 +	"bootcmd=" ENV_CMD_SET_BOOT "\0"
 +
 +#endif     /*  __SECO_ENVIRONMENT_H  */
