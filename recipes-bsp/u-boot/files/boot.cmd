@@ -1,10 +1,10 @@
 setenv console_interface 'earlycon="uart8250,mmio32,0xff160000" swiotlb=1 console="ttyFIQ0,115200n8n"';
 setenv root_device_id 0;
-setenv root_partition 4;
+setenv root_partition 2;
 setenv root_dev 'root=/dev/mmcblk${root_device_id}p${root_partition} rootwait';
 setenv kernel_device_id 0;
-setenv kernel_partition 3;
+setenv kernel_partition 1;
 setenv fdt_device_id 0;
-setenv fdt_partition 3;
+setenv fdt_partition 1;
 setenv fdt_file "seco-px30-d23-revc-hdmi.dtb";
 setenv fdt_overlay_load2ram "";
