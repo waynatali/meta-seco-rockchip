@@ -7,7 +7,7 @@
 # http://opensource.rock-chips.com/wiki_Partitions
 # https://docs.yoctoproject.org/ref-manual/kickstart.html
 
-bootloader --ptable gpt --timeout=${WIC_BOOTLOADER_TIMEOUT} --append=" console=tty1 console=ttyFIQ0,115200n8 rootwait rootfstype=${ROOT_FSTYPE}"
+bootloader --configfile="${DEPLOY_DIR_IMAGE}/grub.cfg" --ptable gpt --timeout=${WIC_BOOTLOADER_TIMEOUT} --append=" console=tty1 console=ttyFIQ0,115200n8 rootwait rootfstype=${ROOT_FSTYPE}"
 part --source rawcopy --sourceparams="file=idblock.img" --offset 32 --fixed-size 4000K --no-table
 part --source rawcopy --sourceparams="file=uboot.img" --offset 8192 --fixed-size 4096K --no-table
 part --source rawcopy --sourceparams="file=trust.img" --offset 12288 --fixed-size 4096K --no-table
