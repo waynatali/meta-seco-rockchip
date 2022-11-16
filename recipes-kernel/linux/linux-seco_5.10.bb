@@ -19,7 +19,7 @@ SRC_URI = " \
 	git://git.yoctoproject.org/yocto-kernel-cache;type=kmeta;name=meta;branch=yocto-${LINUX_VERSION};destsuffix=${KMETA} \
 "
 
-SRCREV = "f0795c0ea4ec02e4023f82c8ad4a407098e22f73"
+SRCREV = "fbd92dd47c2481324b56346354c404902f428827"
 SRCREV_meta = "4ee40666966cf3cb07c45a5e12b68952492e2efc"
 
 KERNEL_VERSION_SANITY_SKIP = "1"
